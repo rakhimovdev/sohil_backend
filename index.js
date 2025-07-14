@@ -6,7 +6,12 @@ const path = require('path');
 
 const File = require('./models/File');  // <-- MUHIM!!! Modelni chaqirish
 
+
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3001',
+  credentials: true
+}));
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
@@ -62,6 +67,10 @@ app.delete("/delete/:id", async (req, res) => {
 app.get('/files', async (req, res) => {
   const files = await File.find().sort({ createdAt: -1 });
   res.json(files);
+});
+
+app.get("/", (req, res) => {
+  res.send("Backend ishlayapti!");
 });
 
 app.listen(5000, () => {
